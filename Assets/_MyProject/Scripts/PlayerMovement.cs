@@ -41,6 +41,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (!this.isActiveAndEnabled)
+            return;
+
         Color gizmoColor = Color.magenta;
         gizmoColor.a = 0.5f;
         Gizmos.color = gizmoColor;
