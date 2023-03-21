@@ -12,9 +12,12 @@ public class DoubleJump : MonoBehaviour
     public Vector2 groundCheckBoxSize = new Vector2(1f, 0.2f);
     public Transform groundCheckBoxCenter;
 
+    public bool groundCheck;
+
     private Rigidbody2D rb2d;
     private float moveInput;
     private int jumpCounter = 0;
+    private bool isFacingRight;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +32,15 @@ public class DoubleJump : MonoBehaviour
 
         if( Input.GetKeyDown(KeyCode.Space) && jumpCounter < numberOfJumps )
         {
-            jumpCounter += 1;
+            if(IsGrounded())
+            {
+                jumpCounter += 1;
+            }
+            else
+            {
+                jumpCounter = numberOfJumps;
+            }
+            
             rb2d.velocity = Vector2.up * jumpForce;
         }
 
@@ -37,6 +48,17 @@ public class DoubleJump : MonoBehaviour
         {
             jumpCounter = 0;    
         }
+
+
+        if(moveInput < 0f && !isFacingRight)
+        {
+            FlipPlayer();
+        }
+        else if(moveInput > 0f && isFacingRight)
+        {
+            FlipPlayer();
+        }
+
     }
 
     private void FixedUpdate()
@@ -47,6 +69,14 @@ public class DoubleJump : MonoBehaviour
     public bool IsGrounded()
     {
         return Physics2D.OverlapBox(groundCheckBoxCenter.position, groundCheckBoxSize, 0f, groundLayer);
+    }
+
+    void FlipPlayer()
+    {
+        isFacingRight = !isFacingRight;
+        Vector2 playerScale = transform.localScale;
+        playerScale.x *= -1;
+        transform.localScale = playerScale;
     }
 
     private void OnDrawGizmos()
