@@ -6,17 +6,23 @@ public class PlayerMovement : MonoBehaviour
 {
     public int playerLives = 3;
 
-    public float playerSpeed = 10;
-    public float jumpForce = 5;
-    public LayerMask groundLayer;
-    public Vector2 checkBoxSize = new Vector2(0.5f, 0.2f);
-    public Transform groundCheck;
+    [Header("Movement")]
+    [SerializeField] private float playerSpeed = 10;
+    [SerializeField] private float jumpForce = 5;
 
+    [Header("Groundcheck ")]
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Vector2 checkBoxSize = new Vector2(0.5f, 0.2f);
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private Color groundCheckColor;
+
+    #region private variables
     private float moveInput;
     private Rigidbody2D rb2d;
     private bool isGrounded;
     private Animator animator;
     private bool isJumping;
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -90,9 +96,7 @@ public class PlayerMovement : MonoBehaviour
         if (!this.isActiveAndEnabled)
             return;
 
-        Color gizmoColor = Color.magenta;
-        gizmoColor.a = 0.5f;
-        Gizmos.color = gizmoColor;
+        Gizmos.color = groundCheckColor;
         Gizmos.DrawCube(groundCheck.position, new Vector3(checkBoxSize.x, checkBoxSize.y, 0f));
     }
 }
